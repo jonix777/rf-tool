@@ -90,10 +90,13 @@ void setup() {
   button2.attachClick(click2);
   button2.attachLongPressStart(longPressStart2);
 
-  oled.begin(&Adafruit128x64, 0x3C);
-  oled.clear();
-  oled.setFont(Arial14);
+  #if RST_PIN >= 0
+  oled.begin(&Adafruit128x64, I2C_ADDRESS, RST_PIN);
+#else // RST_PIN >= 0
+  oled.begin(&Adafruit128x64, I2C_ADDRESS);
+#endif // RST_PIN >= 0
 
+    
   unsigned long lasttime = 0;
   while (true) {
     if (lasttime < millis()) {
